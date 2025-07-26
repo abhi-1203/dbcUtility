@@ -12,6 +12,16 @@ A simple PyQt5-based GUI application for viewing, editing, and managing CAN (Con
 - **File Management**: Load, save, and save-as functionality for DBC files
 - **Modern UI**: Clean, intuitive interface with proper icons and status indicators
 
+## Screenshots
+
+### View Tab - DBC File Browser
+![DBC File Viewer](images/view-dbc.png)
+*Browse and inspect CAN messages and signals in a hierarchical tree structure*
+
+### Edit Tab - DBC File Editor
+![DBC File Editor](images/edit-dbc.png)
+*Full-featured editor for modifying messages and signals with intuitive controls*
+
 ## Project Structure
 
 ```
@@ -86,8 +96,8 @@ This project uses the following third-party libraries:
 ### Main Interface
 The application provides a tabbed interface with three main sections:
 
-1. **View Tab**: Browse DBC files in a tree structure
-2. **Edit Tab**: Full editing capabilities for messages and signals
+1. **View Tab**: Browse DBC files in a tree structure (see screenshot above)
+2. **Edit Tab**: Full editing capabilities for messages and signals (see screenshot above)
 3. **Export Option**: Export CAN messages to C++ Map
 
 ### Key Features
