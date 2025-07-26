@@ -21,10 +21,6 @@ dbcViewer/
 ├── dbc_editor_ui.py       # User interface components
 ├── search_module.py       # Unified search functionality
 ├── requirements.txt       # Python dependencies
-├── dbc/                   # Sample DBC files
-│   ├── sample1.dbc
-│   ├── file.dbc
-│   └── file_clean.dbc
 ├── icons/                 # Application icons
 ├── tests/                 # Test files and utilities
 └── README.md
