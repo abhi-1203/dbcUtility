@@ -1,4 +1,7 @@
-# DBC Viewer - CAN Database Editor
+<div align="center">
+  <img src="icons/app_icon.png" alt="DBC Utility Logo" width="128" height="128">
+  <h1>DBC Viewer - CAN Database Editor</h1>
+</div>
 
 A simple PyQt5-based GUI application for viewing, editing, and managing CAN (Controller Area Network) DBC files.
 
