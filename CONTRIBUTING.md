@@ -83,7 +83,7 @@ This project is committed to providing a welcoming and inclusive environment for
 
 5. Run the application:
    ```bash
-   python DBCUtility.py
+   python main.py
    ```
 
 ### Building the Executable
@@ -91,7 +91,7 @@ This project is committed to providing a welcoming and inclusive environment for
 To build the executable for distribution:
 
 ```bash
-python build_exe.py
+python scripts/build_exe.py
 ```
 
 The executable will be created in the `dist/` directory.

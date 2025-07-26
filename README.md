@@ -16,10 +16,15 @@ A simple PyQt5-based GUI application for viewing, editing, and managing CAN (Con
 
 ```
 dbcViewer/
-├── DBCUtility.py          # Main application entry point
-├── dbc_editor.py          # Core DBC file processing logic
-├── dbc_editor_ui.py       # User interface components
-├── search_module.py       # Unified search functionality
+├── main.py                # Main application entry point
+├── src/                   # Source code directory
+│   ├── DBCUtility.py      # Main application logic
+│   ├── dbc_editor.py      # Core DBC file processing logic
+│   ├── dbc_editor_ui.py   # User interface components
+│   └── search_module.py   # Unified search functionality
+├── scripts/               # Build and utility scripts
+│   ├── build_exe.py       # PyInstaller build script
+│   └── clean_build.py     # Clean build directories
 ├── requirements.txt       # Python dependencies
 ├── icons/                 # Application icons
 ├── tests/                 # Test files and utilities
@@ -41,7 +46,7 @@ dbcViewer/
 
 3. **Run the application**:
    ```bash
-   python DBCUtility.py
+   python main.py
    ```
 
 ## Dependencies
@@ -115,10 +120,21 @@ The application provides a tabbed interface with three main sections:
 
 ### Code Structure
 
-- **`DBCUtility.py`**: Main application with PyQt5 window management
-- **`dbc_editor.py`**: Core DBC processing using cantools library
-- **`dbc_editor_ui.py`**: UI components and dialog boxes
-- **`search_module.py`**: Search and filtering functionality
+- **`main.py`**: Main application entry point
+- **`src/DBCUtility.py`**: Main application with PyQt5 window management
+- **`src/dbc_editor.py`**: Core DBC processing using cantools library
+- **`src/dbc_editor_ui.py`**: UI components and dialog boxes
+- **`src/search_module.py`**: Search and filtering functionality
+
+### Building the Executable
+
+To build the executable for distribution:
+
+```bash
+python scripts/build_exe.py
+```
+
+The executable will be created in the `dist/` directory.
 
 ### Testing
 

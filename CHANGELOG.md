@@ -15,17 +15,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic backup file cleanup functionality
 - Enhanced icon handling for PyInstaller executables
 - GPL v3 license compliance for PyQt5 compatibility
+- **Project structure reorganization** with `src/` and `scripts/` folders
 
 ### Changed
 - Updated README.md with detailed third-party license information
 - Improved GPL compliance documentation
 - Enhanced build script to clean existing executables
 - **License changed from MIT to GPL v3 for PyQt5 compliance**
+- **Project structure reorganized** for better maintainability
+- **Build scripts moved** to `scripts/` directory
+- **Source code moved** to `src/` package
+- **New main entry point** (`main.py`) for cleaner imports
 
 ### Fixed
 - None type handling for signal attributes (minimum, maximum, scale, offset, start_bit, length)
 - Icon loading issues in PyInstaller executables
 - Application icon consistency between executable and taskbar
+- **Import structure issues** after project reorganization
+- **Removed redundant main entry point** from src/DBCUtility.py
 
 ## [1.0.0] - 2025-01-XX
 
