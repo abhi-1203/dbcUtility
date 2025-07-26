@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Minor bug fixes and stability improvements
+- **PyInstaller import issues** - Fixed module import errors in executable
 
 ---
 

@@ -66,6 +66,7 @@ def build_executable():
             "--windowed",
             "--icon=icons/app_icon.ico",
             "--add-data=icons;icons",
+            "--paths=src",  # Add src directory to Python path
             "--hidden-import=PyQt5.QtCore",
             "--hidden-import=PyQt5.QtGui",
             "--hidden-import=PyQt5.QtWidgets",

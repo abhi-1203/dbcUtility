@@ -21,3 +21,4 @@ dbc/*.dbc
 release-*/
 *.exe
 dist/
+*.zip

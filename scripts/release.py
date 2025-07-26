@@ -74,6 +74,9 @@ def create_release_package(version):
     # Create release notes
     create_release_notes(release_dir, version)
     
+    # Create zip package
+    create_zip_package(release_dir, version)
+    
     print(f"✓ Release package created: {release_dir}/")
     return True
 
@@ -125,6 +128,36 @@ For issues and feature requests, please visit the project repository.
         f.write(release_notes)
     
     print("✓ Created RELEASE_NOTES.txt")
+
+def create_zip_package(release_dir, version):
+    """Create a zip package for the release"""
+    print(f"=== Creating Zip Package ===")
+    
+    # Zip file name
+    zip_filename = f"DBCUtility-v{version}.zip"
+    
+    # Create zip file
+    try:
+        import zipfile
+        with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            # Add all files from release directory
+            for root, dirs, files in os.walk(release_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    # Add file to zip with relative path
+                    arcname = os.path.relpath(file_path, release_dir)
+                    zipf.write(file_path, arcname)
+                    print(f"✓ Added to zip: {arcname}")
+        
+        # Get file size
+        file_size = os.path.getsize(zip_filename)
+        size_mb = file_size / (1024 * 1024)
+        
+        print(f"✓ Zip package created: {zip_filename}")
+        print(f"✓ File size: {size_mb:.1f} MB")
+        
+    except Exception as e:
+        print(f"✗ Failed to create zip: {e}")
 
 def main():
     """Main release process"""
