@@ -136,6 +136,24 @@ python scripts/build_exe.py
 
 The executable will be created in the `dist/` directory.
 
+### Creating a Release
+
+To create a complete release package:
+
+```bash
+python scripts/release.py
+```
+
+This will:
+- Build the executable
+- Create a versioned release package
+- Include all necessary documentation
+- Generate release notes
+
+The release package will be created in `release-v{version}/` directory.
+
+**Note**: Release packages are not included in the git repository. They are created locally and should be uploaded to GitHub releases separately.
+
 ### Testing
 
 The `tests/` directory contains various test files for:

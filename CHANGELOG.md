@@ -5,7 +5,23 @@ All notable changes to DBC Utility will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2025-01-27
+
+### Added
+- Enhanced search functionality with real-time filtering
+- Improved error handling and user feedback
+- Better documentation and code comments
+
+### Changed
+- Performance optimizations for large DBC files
+- UI improvements and bug fixes
+
+### Fixed
+- Minor bug fixes and stability improvements
+
+---
+
+## [1.0.0] - 2025-01-27
 
 ### Added
 - Comprehensive contribution guidelines (CONTRIBUTING.md)
@@ -16,6 +32,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced icon handling for PyInstaller executables
 - GPL v3 license compliance for PyQt5 compatibility
 - **Project structure reorganization** with `src/` and `scripts/` folders
+- Initial release of DBC Utility
+- DBC file viewer with tree structure
+- DBC file editor with full CRUD operations
+- Advanced search functionality across messages and signals
+- C++ export functionality
+- PyQt5-based modern GUI
+- Icon support for all buttons and tabs
+- File management (load, save, save-as)
+- Backup file creation during save operations
 
 ### Changed
 - Updated README.md with detailed third-party license information

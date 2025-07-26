@@ -16,3 +16,8 @@ venv/
 #ignore dbcs
 dbc/
 dbc/*.dbc
+
+# Release packages and executables
+release-*/
+*.exe
+dist/
