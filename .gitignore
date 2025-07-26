@@ -1,0 +1,14 @@
+build/
+dist/
+*.spec
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pywz
+*.pyzw
+
+tests/
+dbcenv/
+venv/
