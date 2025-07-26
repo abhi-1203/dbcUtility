@@ -37,16 +37,14 @@ BU_:
 
 
 BO_ 2364540158 EEC1: 8 VCU
- SG_ EngineSpeed : 24|16@1+ (0.125,0.0) [0.0|8031.875] "rpm"  TCU
 
 BO_ 2566844926 CCVS1: 8 Vector__XXX
- SG_ WheelBasedVehicleSpeed : 8|16@1+ (0.00390625,0) [0|250.996] "km/h"  Vector__XXX
+ SG_ WheelBasedVehicleSpeed : 8|16@1+ (0.00390625,0) [0|250.996] "km/h" Vector__XXX
 
 
 
 
 CM_ BO_ 2364540158 "Electronic Engine Controller 1";
-CM_ SG_ 2364540158 EngineSpeed "Actual sample engine speed which is calculated over a minimum crankshaft angle of 720 degrees divided by the number of cylinders.";
 CM_ BO_ 2566844926 "Cruise Control/Vehicle Speed 1";
 CM_ SG_ 2566844926 WheelBasedVehicleSpeed "Wheel-Based Vehicle Speed: Speed of the vehicle as calculated from wheel or tailshaft speed.";
 

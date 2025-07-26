@@ -6,12 +6,23 @@ Provides the user interface for editing DBC files.
 """
 
 import os
+import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
 from typing import Dict, List, Optional, Any
 import json
 
 from dbc_editor import DBCEditor, DBCEditorError
 from search_module import UnifiedSearchWidget
+
+def get_resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    
+    return os.path.join(base_path, relative_path)
 
 class MessageEditDialog(QtWidgets.QDialog):
     """Enhanced dialog for editing message properties."""
@@ -341,8 +352,19 @@ class SignalEditDialog(QtWidgets.QDialog):
         """Load existing signal data into the form."""
         if self.signal_data:
             self.name_edit.setText(self.signal_data.get('name', ''))
-            self.start_bit_edit.setValue(self.signal_data.get('start_bit', 0))
-            self.length_edit.setValue(self.signal_data.get('length', 1))
+            
+            # Handle potential None values for start_bit and length
+            start_bit_val = self.signal_data.get('start_bit')
+            if start_bit_val is not None:
+                self.start_bit_edit.setValue(int(start_bit_val))
+            else:
+                self.start_bit_edit.setValue(0)
+                
+            length_val = self.signal_data.get('length')
+            if length_val is not None:
+                self.length_edit.setValue(int(length_val))
+            else:
+                self.length_edit.setValue(1)
             
             byte_order = self.signal_data.get('byte_order', 'little_endian')
             index = self.byte_order_combo.findText(byte_order)
@@ -350,10 +372,33 @@ class SignalEditDialog(QtWidgets.QDialog):
                 self.byte_order_combo.setCurrentIndex(index)
             
             self.is_signed_check.setChecked(self.signal_data.get('is_signed', False))
-            self.scale_edit.setValue(self.signal_data.get('scale', 1.0))
-            self.offset_edit.setValue(self.signal_data.get('offset', 0.0))
-            self.minimum_edit.setValue(self.signal_data.get('minimum', 0.0))
-            self.maximum_edit.setValue(self.signal_data.get('maximum', 0.0))
+            
+            # Handle potential None values for scale and offset
+            scale_val = self.signal_data.get('scale')
+            if scale_val is not None:
+                self.scale_edit.setValue(float(scale_val))
+            else:
+                self.scale_edit.setValue(1.0)
+                
+            offset_val = self.signal_data.get('offset')
+            if offset_val is not None:
+                self.offset_edit.setValue(float(offset_val))
+            else:
+                self.offset_edit.setValue(0.0)
+            
+            # Handle None values for minimum and maximum
+            minimum_val = self.signal_data.get('minimum')
+            if minimum_val is not None:
+                self.minimum_edit.setValue(float(minimum_val))
+            else:
+                self.minimum_edit.setValue(0.0)
+                
+            maximum_val = self.signal_data.get('maximum')
+            if maximum_val is not None:
+                self.maximum_edit.setValue(float(maximum_val))
+            else:
+                self.maximum_edit.setValue(0.0)
+                
             self.unit_edit.setText(self.signal_data.get('unit', ''))
             self.receivers_edit.setText(', '.join(self.signal_data.get('receivers', [])))
             self.comments_edit.setPlainText(self.signal_data.get('comments', ''))
@@ -379,6 +424,14 @@ class SignalEditDialog(QtWidgets.QDialog):
         if not name:
             raise ValueError("Signal name is required")
         
+        # Handle minimum and maximum values
+        minimum_val = self.minimum_edit.value()
+        maximum_val = self.maximum_edit.value()
+        
+        # Note: The spinboxes will always return numeric values (0.0 if not set)
+        # If you need to distinguish between "not set" and "explicitly set to 0",
+        # you would need to add additional UI elements (like checkboxes) to track this
+        
         return {
             'name': name,
             'start_bit': self.start_bit_edit.value(),
@@ -387,8 +440,8 @@ class SignalEditDialog(QtWidgets.QDialog):
             'is_signed': self.is_signed_check.isChecked(),
             'scale': self.scale_edit.value(),
             'offset': self.offset_edit.value(),
-            'minimum': self.minimum_edit.value(),
-            'maximum': self.maximum_edit.value(),
+            'minimum': minimum_val,
+            'maximum': maximum_val,
             'unit': self.unit_edit.text().strip(),
             'receivers': [r.strip() for r in self.receivers_edit.text().split(',') if r.strip()],
             'comments': self.comments_edit.toPlainText().strip()
@@ -467,9 +520,9 @@ class DBCEditorWidget(QtWidgets.QWidget):
         self.save_as_button = QtWidgets.QPushButton("Save As...")
         
         # Set button icons
-        # self._set_button_icon(self.load_button, "icons/load.ico")
-        # self._set_button_icon(self.save_button, "icons/save.ico")
-        # self._set_button_icon(self.save_as_button, "icons/save_as.ico")
+        self._set_button_icon(self.load_button, "icons/load.ico")
+        self._set_button_icon(self.save_button, "icons/save.ico")
+        self._set_button_icon(self.save_as_button, "icons/save_as.ico")
         
         self.load_button.clicked.connect(self.load_dbc_file)
         self.save_button.clicked.connect(self.save_changes)
@@ -581,8 +634,9 @@ class DBCEditorWidget(QtWidgets.QWidget):
     def _set_button_icon(self, button, icon_path):
         """Set icon for a button if the icon file exists."""
         try:
-            if os.path.exists(icon_path):
-                icon = QtGui.QIcon(icon_path)
+            full_icon_path = get_resource_path(icon_path)
+            if os.path.exists(full_icon_path):
+                icon = QtGui.QIcon(full_icon_path)
                 button.setIcon(icon)
                 # Set icon size
                 button.setIconSize(QtCore.QSize(16, 16))
@@ -666,6 +720,9 @@ class DBCEditorWidget(QtWidgets.QWidget):
                 self.status_label.setText("DBC file loaded successfully")
                 QtWidgets.QApplication.processEvents()
                 self.update_button_states()
+                
+                # Clean up any existing backup files for the newly loaded file
+                self.dbc_editor._cleanup_backup_file(file_path)
         except DBCEditorError as e:
             self._show_error(f"Failed to load DBC file: {str(e)}")
         except Exception as e:

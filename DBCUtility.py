@@ -1,13 +1,29 @@
 #!/usr/bin/env python3
 
 """
+DBC Utility - CAN Database Editor
+Copyright (C) 2025 Abhijith Purohit
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 Author: Abhijith Purohit
 Date: 15, July - 2025
 
 Description:
     PyQt5 GUI to View and Edit DBC files.
 
-Version: v1.1
+Version: v1.0.0
 
 Features:
     1. User can view and edit the DBC file.
@@ -20,7 +36,6 @@ Features:
 
 import sys
 import json
-import subprocess
 import os
 
 def show_import_error(pkg):
@@ -54,50 +69,19 @@ except ImportError:
 from search_module import UnifiedSearchWidget
 from dbc_editor_ui import DBCEditorWidget
 
-def read_requirements():
-    """Read requirements from requirements.txt file."""
-    requirements = []
+def get_resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
     try:
-        with open('requirements.txt', 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    # Extract package name (remove version specifiers)
-                    package_name = line.split('>=')[0].split('==')[0].split('<=')[0].strip()
-                    requirements.append(package_name)
-    except FileNotFoundError:
-        print("Warning: requirements.txt not found. Using default packages.")
-        requirements = ['PyQt5', 'cantools', 'Pillow']
-    return requirements
-
-def install_package(package_name):
-    """Installs a package using pip."""
-    try:
-        # Check if the package is already installed
-        __import__(package_name)
-        print(f"✓ {package_name} is already installed.")
-    except ImportError:
-        print(f"Installing {package_name}...")
-        try:
-            # Install the package using pip
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
-            print(f"✓ {package_name} installed successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"✗ Error installing {package_name}: {e}")
-            sys.exit(1)
-
-def check_and_install_requirements():
-    """Check and install required packages from requirements.txt."""
-    print("Checking required packages...")
-    required_packages = read_requirements()
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
     
-    for package in required_packages:
-        install_package(package)
-    
-    print("All required packages are ready!")
+    return os.path.join(base_path, relative_path)
 
-# Check and install required packages
-check_and_install_requirements()
+# Package installation removed for executable compatibility
+# All required packages should be installed during development
+# and included in the PyInstaller spec file
 
 class EmptyWidget(QtWidgets.QWidget):
     """A placeholder widget for empty menu pages."""
@@ -233,7 +217,7 @@ class ConverterWindow(QtWidgets.QWidget):
         self.exitBtn.setFixedWidth(80)
         
         # Set button icons
-        # self._set_button_icon(self.refresh_btn, "icons/refresh.ico")
+        self._set_button_icon(self.refresh_btn, "icons/refresh.ico")
         self._set_button_icon(self.convert_to_map_btn, "icons/convert.ico")
         self._set_button_icon(self.exitBtn, "icons/exit.ico")
         
@@ -268,8 +252,9 @@ class ConverterWindow(QtWidgets.QWidget):
     def _set_button_icon(self, button, icon_path):
         """Set icon for a button if the icon file exists."""
         try:
-            if os.path.exists(icon_path):
-                icon = QtGui.QIcon(icon_path)
+            full_icon_path = get_resource_path(icon_path)
+            if os.path.exists(full_icon_path):
+                icon = QtGui.QIcon(full_icon_path)
                 button.setIcon(icon)
                 # Set icon size
                 button.setIconSize(QtCore.QSize(16, 16))
@@ -465,7 +450,7 @@ class ConverterWindow(QtWidgets.QWidget):
 
 class MainWindow(QtWidgets.QMainWindow):
     APP_NAME = "CAN DBC Utility"
-    APP_VERSION = "v1.1"
+    APP_VERSION = "v1.0.0"
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -493,15 +478,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def _set_app_icon(self):
         """Set the application icon if the icon file exists."""
         try:
-            icon_path = "icons/app_icon.png"
+            icon_path = get_resource_path("icons/app_icon.ico")
             if os.path.exists(icon_path):
                 icon = QtGui.QIcon(icon_path)
+                # Set window icon (this affects the window title bar)
                 self.setWindowIcon(icon)
-                # Set for the application to appear in taskbar
-                QtWidgets.QApplication.setWindowIcon(icon)
-                # Also set for the application instance
+                # Ensure application icon is set (this affects taskbar)
                 app = QtWidgets.QApplication.instance()
-                if app:
+                if app and app.windowIcon().isNull():
                     app.setWindowIcon(icon)
         except Exception as e:
             print(f"Could not load application icon {icon_path}: {e}")
@@ -509,8 +493,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def _get_tab_icon(self, icon_path):
         """Get icon for tab if the icon file exists."""
         try:
-            if os.path.exists(icon_path):
-                return QtGui.QIcon(icon_path)
+            full_icon_path = get_resource_path(icon_path)
+            if os.path.exists(full_icon_path):
+                return QtGui.QIcon(full_icon_path)
         except Exception as e:
             print(f"Could not load tab icon {icon_path}: {e}")
         return QtGui.QIcon()  # Return empty icon if file doesn't exist
@@ -523,18 +508,30 @@ class MainWindow(QtWidgets.QMainWindow):
         status_bar.addPermanentWidget(app_version_label)
         status_bar.setStyleSheet("QStatusBar{padding-left:8px;background:#f0f0f0;color:black;}")
 
+    def closeEvent(self, event):
+        """Handle application close event to clean up backup files."""
+        try:
+            # Clean up backup files from DBC editor
+            if hasattr(self.edit_dbc_page, 'dbc_editor'):
+                self.edit_dbc_page.dbc_editor.cleanup_all_backups()
+        except Exception as e:
+            print(f"Error during cleanup: {e}")
+        
+        # Accept the close event
+        event.accept()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     
-    # Set application icon early for taskbar
+    # Set application icon at the QApplication level first
     try:
-        icon_path = "icons/app_icon.png"
+        icon_path = get_resource_path("icons/app_icon.ico")
         if os.path.exists(icon_path):
-            icon = QtGui.QIcon(icon_path)
-            app.setWindowIcon(icon)
+            app_icon = QtGui.QIcon(icon_path)
+            app.setWindowIcon(app_icon)
     except Exception as e:
-        print(f"Could not load application icon {icon_path}: {e}")
+        print(f"Could not load application icon: {e}")
     
     main_window = MainWindow() # Create an instance of MainWindow
     main_window.show()

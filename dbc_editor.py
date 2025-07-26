@@ -213,8 +213,9 @@ class DBCEditor:
                     # Set additional properties after creation
                     signal.scale = sig['scale']
                     signal.offset = sig['offset']
-                    signal.minimum = sig['minimum']
-                    signal.maximum = sig['maximum']
+                    # Handle None values for minimum and maximum
+                    signal.minimum = sig['minimum'] if sig['minimum'] is not None else None
+                    signal.maximum = sig['maximum'] if sig['maximum'] is not None else None
                     signal.unit = sig['unit']
                     
                     # Set comment if available
@@ -245,6 +246,9 @@ class DBCEditor:
             
             # Update original data to reflect saved state
             self._original_data = {'messages': [dict(m) for m in self._modified_data['messages']]}
+            
+            # Clean up backup file after successful save
+            self._cleanup_backup_file(file_path)
             
             logger.info(f"Saved DBC file: {file_path}")
             
@@ -402,4 +406,19 @@ class DBCEditor:
     def reset_changes(self) -> None:
         """Reset all changes back to the original state."""
         if self._original_data:
-            self._modified_data = {'messages': [dict(m) for m in self._original_data['messages']]} 
+            self._modified_data = {'messages': [dict(m) for m in self._original_data['messages']]}
+
+    def _cleanup_backup_file(self, file_path: str) -> None:
+        """Delete the backup file for the given DBC file."""
+        try:
+            backup_path = file_path + '.backup'
+            if os.path.exists(backup_path):
+                os.remove(backup_path)
+                logger.info(f"Cleaned up backup file: {backup_path}")
+        except Exception as e:
+            logger.warning(f"Could not delete backup file {backup_path}: {e}")
+
+    def cleanup_all_backups(self) -> None:
+        """Clean up all backup files for loaded DBC files."""
+        if self.file_path:
+            self._cleanup_backup_file(self.file_path) 

@@ -1,5 +1,4 @@
 build/
-dist/
 *.spec
 *.pyc
 *.pyo
@@ -12,3 +11,7 @@ dist/
 tests/
 dbcenv/
 venv/
+
+
+#ignore dbcs
+dbc/
