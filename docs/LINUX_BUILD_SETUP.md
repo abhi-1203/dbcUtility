@@ -64,12 +64,14 @@ This will:
 
 After a successful build, you'll find a new folder in `linuxBuilds/` containing:
 
-- **DBCUtility** - The main executable
+- **DBCUtility** - The main executable (with all dependencies bundled)
 - **Icons and resources** - All application assets
 - **install.sh** - System-wide installation script
 - **uninstall.sh** - Removal script
 - **launch-dbc-utility.sh** - Portable launcher
 - **Desktop integration files** - Menu entries and icons
+
+**Note**: The distribution includes only the compiled application and resources. Source code is not included for security and size optimization.
 
 ## Installation Options
 

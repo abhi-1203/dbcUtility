@@ -101,8 +101,7 @@ def build_linux_package():
         "--windowed",  # No console window
         "--icon=icons/app_icon.png",  # Use PNG icon for Linux
         "--add-data=icons:icons",  # Include icons
-        "--add-data=src:src",  # Include source files
-        "--paths=src",  # Add src to Python path
+        "--paths=src",  # Add src to Python path (for imports, not data)
         "--hidden-import=PyQt5.QtCore",
         "--hidden-import=PyQt5.QtGui", 
         "--hidden-import=PyQt5.QtWidgets",
