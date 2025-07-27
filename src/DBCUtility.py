@@ -27,10 +27,9 @@ Version: v1.0.0
 
 Features:
     1. User can view and edit the DBC file.
-    2. CAN Messages can be exported to C++ Map.
-    4. Helps Search signals for ease of access
-    5. Able to edit both Messages and Signals.
-    6. TODO: Add ability to view CAN dumps ?
+    2. Helps Search signals for ease of access
+    3. Able to edit both Messages and Signals.
+    4. TODO: Add ability to view CAN dumps ?
 
 """
 
@@ -137,31 +136,7 @@ class DBCProcessor:
     def get_extracted_data(self):
         return list(self._extracted_data)
 
-    def convert_to_cpp_map_entries(self):
-        cpp_map_entries = []
-        cpp_map_entries.append("// C++ Signal Definition (example, adjust as needed):")
-        cpp_map_entries.append("// struct SignalAttributes {")
-        cpp_map_entries.append("//     double min_val;")
-        cpp_map_entries.append("//     double max_val;")
-        cpp_map_entries.append("//     bool is_signed;")
-        cpp_map_entries.append("//     std::string comment;")
-        cpp_map_entries.append("// };")
-        cpp_map_entries.append("// std::map<std::string, SignalAttributes> signalMap = {")
-        for msg in self._extracted_data:
-            for sig in msg["signals"]:
-                signal_name = sig["signal_name"]
-                min_val = sig["minimum"]
-                max_val = sig["maximum"]
-                is_signed = "true" if sig["is_signed"] else "false"
-                comments = sig["comments"].replace('"', '\\"')
-                entry = (
-                    f'    {{"{signal_name}", '
-                    f'{{static_cast<double>({min_val}), static_cast<double>({max_val}), {is_signed}, "{comments}"}}'
-                    f'}},'
-                )
-                cpp_map_entries.append(entry)
-        cpp_map_entries.append("// };")
-        return "\n".join(cpp_map_entries)
+
 
 class ConverterWindow(QtWidgets.QWidget):
     """
@@ -211,20 +186,17 @@ class ConverterWindow(QtWidgets.QWidget):
         self.refresh_btn = QtWidgets.QPushButton("Refresh")
         self.refresh_btn.setStyleSheet("background-color: #3498db; color: white; border-radius: 5px; padding: 5px 10px;")
         self.refresh_btn.setFixedWidth(80)
-        self.convert_to_map_btn = QtWidgets.QPushButton("Export to C++ Map")
         self.exitBtn = QtWidgets.QPushButton("Exit")
         self.exitBtn.setStyleSheet("background-color: #e74c3c; color: white; border-radius: 5px; padding: 5px 10px;")
         self.exitBtn.setFixedWidth(80)
         
         # Set button icons
         self._set_button_icon(self.refresh_btn, "icons/refresh.ico")
-        self._set_button_icon(self.convert_to_map_btn, "icons/convert.ico")
         self._set_button_icon(self.exitBtn, "icons/exit.ico")
         
         top_buttons_layout = QtWidgets.QHBoxLayout()
         top_buttons_layout.addStretch()
         top_buttons_layout.addWidget(self.refresh_btn)
-        top_buttons_layout.addWidget(self.convert_to_map_btn)
         top_buttons_layout.addWidget(self.exitBtn)
         right_v_layout.addLayout(top_buttons_layout)
         self.details_widget = QtWidgets.QFrame()
@@ -245,7 +217,6 @@ class ConverterWindow(QtWidgets.QWidget):
         self.dbc_browse_btn.clicked.connect(self.select_dbc_file)
         self.load_signals_btn.clicked.connect(self.load_and_display_signals)
         self.refresh_btn.clicked.connect(self.load_and_display_signals)
-        self.convert_to_map_btn.clicked.connect(self.save_cpp_map_file)
         self.exitBtn.clicked.connect(self.parent().close)
         self.tree_widget.itemClicked.connect(self.display_item_details)
 
@@ -428,21 +399,7 @@ class ConverterWindow(QtWidgets.QWidget):
         except Exception as e:
             self._show_error(f"Error displaying item details: {e}")
 
-    def save_cpp_map_file(self):
-        if not self.dbc_processor.get_extracted_data():
-            self._show_error("No data loaded to convert. Please load a DBC file first.")
-            return
-        cpp_content = self.dbc_processor.convert_to_cpp_map_entries()
-        try:
-            file_name, _ = QtWidgets.QFileDialog.getSaveFileName(
-                self, "Save C++ Map File", "signal_map.txt", "Text Files (*.txt);;All Files (*)"
-            )
-            if file_name:
-                with open(file_name, 'w') as f:
-                    f.write(cpp_content)
-                self.message_label.setText(f"C++ map entries saved to: <font color='green'>{file_name}</font>")
-        except Exception as e:
-            self._show_error(f"Error saving file: {e}")
+
 
     def _show_error(self, message):
         QtWidgets.QMessageBox.critical(self, "Error", message)

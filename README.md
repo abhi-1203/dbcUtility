@@ -10,7 +10,7 @@ A simple PyQt5-based GUI application for viewing, editing, and managing CAN (Con
 - **DBC File Viewer**: Browse and inspect CAN messages and signals in a tree structure
 - **DBC File Editor**: Full-featured editor for modifying messages and signals
 - **Advanced Search**: Unified search functionality with filters for messages, signals, and frame IDs
-- **C++ Export**: Convert CAN messages to C++ map entries for code generation
+
 - **Signal Management**: Add, edit, and delete both messages and signals
 - **File Management**: Load, save, and save-as functionality for DBC files
 - **Modern UI**: Clean, intuitive interface with proper icons and status indicators
@@ -36,16 +36,24 @@ dbcViewer/
 │   ├── dbc_editor_ui.py   # User interface components
 │   └── search_module.py   # Unified search functionality
 ├── scripts/               # Build and utility scripts
-│   ├── build_exe.py       # PyInstaller build script
-│   └── clean_build.py     # Clean build directories
+│   ├── build_exe.py       # Windows PyInstaller build script
+│   ├── build_linux.py     # Linux distribution build script
+│   ├── release.py         # Windows release script
+│   ├── release_linux.py   # Linux release script
+│   ├── clean_build.py     # Clean build directories
+│   └── make_executable.py # Make build scripts executable
+├── docs/                  # Documentation
+│   └── LINUX_BUILD_SETUP.md # Linux build setup guide
 ├── requirements.txt       # Python dependencies
 ├── icons/                 # Application icons
+├── images/                # Screenshots for README
 ├── tests/                 # Test files and utilities
 └── README.md
 ```
 
 ## Installation
 
+### Windows
 1. **Clone the repository**:
    ```bash
    git clone <repository-url>
@@ -60,6 +68,36 @@ dbcViewer/
 3. **Run the application**:
    ```bash
    python main.py
+   ```
+
+### Linux
+1. **Download Linux Distribution** (recommended):
+   - Download `DBCUtility-Linux-x86_64-v1.0.0.tar.gz` from releases
+   - Extract: `tar -xzf DBCUtility-Linux-x86_64-v1.0.0.tar.gz`
+   - Install: `cd DBCUtility-Linux-x86_64-v1.0.0 && ./install.sh`
+
+2. **Download AppImage** (alternative):
+   - Download `DBCUtility-Linux-x86_64-v1.0.0.AppImage` from releases
+   - Make executable: `chmod +x DBCUtility-Linux-x86_64-v1.0.0.AppImage`
+   - Run: `./DBCUtility-Linux-x86_64-v1.0.0.AppImage`
+
+3. **Build from source**:
+   ```bash
+   git clone <repository-url>
+   cd dbcViewer
+   pip install -r requirements.txt
+   python main.py
+   ```
+
+4. **Build Linux Distribution** (for distribution):
+   ```bash
+   # See docs/LINUX_BUILD_SETUP.md for detailed instructions
+   python scripts/build_linux.py
+   ```
+
+5. **Create Complete Release**:
+   ```bash
+   python scripts/release_linux.py
    ```
 
 ## Dependencies
@@ -101,7 +139,7 @@ The application provides a tabbed interface with three main sections:
 
 1. **View Tab**: Browse DBC files in a tree structure (see screenshot above)
 2. **Edit Tab**: Full editing capabilities for messages and signals (see screenshot above)
-3. **Export Option**: Export CAN messages to C++ Map
+
 
 ### Key Features
 
@@ -125,8 +163,7 @@ The application provides a tabbed interface with three main sections:
 - **Filter Options**: Filter by message type, signal type, or frame ID
 - **Real-time Filtering**: Instant search results as you type
 
-#### C++ Export
-- **Code Generation**: Convert CAN messages to C++ map entries
+
 - **Customizable Output**: Configure export format and options
 
 ## Development
