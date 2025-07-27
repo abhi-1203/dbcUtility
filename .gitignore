@@ -19,6 +19,13 @@ dbc/*.dbc
 
 # Release packages and executables
 release-*/
+release-linux-*/
 *.exe
 dist/
 *.zip
+*.AppImage
+*.tar.gz
+DBCUtility.AppDir/
+
+# Linux builds
+linuxBuilds/
