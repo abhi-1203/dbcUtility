@@ -94,7 +94,7 @@ This is the initial release of DBC Utility, a comprehensive CAN database editor.
 - DBC file viewer with tree structure
 - Full DBC file editor with CRUD operations
 - Advanced search functionality
-- C++ export functionality
+
 - Modern PyQt5-based GUI
 - Icon support for all buttons
 - File management (load, save, save-as)
@@ -114,7 +114,7 @@ This is the initial release of DBC Utility, a comprehensive CAN database editor.
 - Browse messages and signals in the View tab
 - Edit messages and signals in the Edit tab
 - Use the search functionality to find specific items
-- Export to C++ code using the Export tab
+
 
 ### License
 This software is licensed under GNU General Public License v3 (GPL v3).

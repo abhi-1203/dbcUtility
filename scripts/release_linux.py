@@ -103,7 +103,6 @@ This is the Linux release of DBC Utility, a comprehensive CAN database editor.
 - DBC file viewer with tree structure
 - Full DBC file editor with CRUD operations
 - Advanced search functionality
-- C++ export functionality
 - Modern PyQt5-based GUI
 - Icon support for all buttons
 - File management (load, save, save-as)
@@ -304,7 +303,6 @@ def create_combined_release_notes(release_dir, version):
 - DBC file viewer with tree structure
 - Full DBC file editor with CRUD operations
 - Advanced search functionality
-- C++ export functionality
 - Modern PyQt5-based GUI
 - Icon support for all buttons
 - File management (load, save, save-as)

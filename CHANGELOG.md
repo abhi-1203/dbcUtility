@@ -37,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DBC file viewer with tree structure
 - DBC file editor with full CRUD operations
 - Advanced search functionality across messages and signals
-- C++ export functionality
 - PyQt5-based modern GUI
 - Icon support for all buttons and tabs
 - File management (load, save, save-as)
@@ -67,7 +66,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DBC file viewer with tree structure
 - DBC file editor with full CRUD operations
 - Advanced search functionality across messages and signals
-- C++ export functionality
 - PyQt5-based modern GUI
 - Icon support for all buttons and tabs
 - File management (load, save, save-as)
@@ -78,7 +76,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **View Tab**: Browse DBC files in hierarchical structure
 - **Edit Tab**: Full editing capabilities for messages and signals
 - **Search**: Unified search with filters
-- **Export**: C++ code generation
 - **File Operations**: Load, save, and save-as functionality
 
 ### Technical Details

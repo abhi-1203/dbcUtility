@@ -11,7 +11,7 @@ This folder contains icons for the DBC Viewer application.
 - **`browse.ico`** - Browse button (folder icon)
 - **`load.ico`** - Load signals button (download/refresh icon)
 - **`refresh.ico`** - Refresh button (circular arrow icon)
-- **`convert.ico`** - Convert to C++ Map button (code/export icon)
+
 - **`exit.ico`** - Exit button (X/close icon)
 - **`add.ico`** - Add message/signal button (plus icon)
 - **`edit.ico`** - Edit message/signal button (pencil icon)

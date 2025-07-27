@@ -10,7 +10,7 @@ A simple PyQt5-based GUI application for viewing, editing, and managing CAN (Con
 - **DBC File Viewer**: Browse and inspect CAN messages and signals in a tree structure
 - **DBC File Editor**: Full-featured editor for modifying messages and signals
 - **Advanced Search**: Unified search functionality with filters for messages, signals, and frame IDs
-- **C++ Export**: Convert CAN messages to C++ map entries for code generation
+
 - **Signal Management**: Add, edit, and delete both messages and signals
 - **File Management**: Load, save, and save-as functionality for DBC files
 - **Modern UI**: Clean, intuitive interface with proper icons and status indicators
@@ -139,7 +139,7 @@ The application provides a tabbed interface with three main sections:
 
 1. **View Tab**: Browse DBC files in a tree structure (see screenshot above)
 2. **Edit Tab**: Full editing capabilities for messages and signals (see screenshot above)
-3. **Export Option**: Export CAN messages to C++ Map
+
 
 ### Key Features
 
@@ -163,8 +163,7 @@ The application provides a tabbed interface with three main sections:
 - **Filter Options**: Filter by message type, signal type, or frame ID
 - **Real-time Filtering**: Instant search results as you type
 
-#### C++ Export
-- **Code Generation**: Convert CAN messages to C++ map entries
+
 - **Customizable Output**: Configure export format and options
 
 ## Development
