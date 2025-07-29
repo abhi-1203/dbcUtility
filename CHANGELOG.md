@@ -5,6 +5,20 @@ All notable changes to DBC Utility will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-01-29
+
+### Changed
+- Updated paths for Linux installation to use `_internal/icons/` directory
+- Updated Refresh button UI for better user experience
+- Removed unused main.spec to avoid confusion and maintain cleaner project structure
+
+### Fixed
+- Linux installation script now correctly copies icons from PyInstaller's `_internal` folder
+- Desktop entry icon paths now reference system icon directory for proper display
+- Removed unnecessary PIL/Pillow dependency as it was not being used by the application
+
+---
+
 ## [1.0.0] - 2025-01-27
 
 ### Added
