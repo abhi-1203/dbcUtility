@@ -104,7 +104,6 @@ dbcViewer/
 
 - **PyQt5** (≥5.15.0) - GUI framework
 - **cantools** (≥40.0.0) - DBC file parsing and manipulation
-- **Pillow** (≥8.0.0) - Image processing for icons
 - **pyinstaller** (≥5.0.0) - For creating executables
 
 ### Third-Party Licenses
@@ -121,11 +120,6 @@ This project uses the following third-party libraries:
 - **License**: MIT License
 - **Copyright**: © 2015-2024 Erik Moqvist
 - **Repository**: https://github.com/cantools/cantools
-
-#### Pillow (PIL)
-- **License**: HPND License
-- **Copyright**: © 1997-2011 by Secret Labs AB, © 1995-2011 by Fredrik Lundh
-- **Repository**: https://github.com/python-pillow/Pillow
 
 #### PyInstaller
 - **License**: GPL v2 with exception
@@ -240,7 +234,6 @@ When distributing this application or any derivative works, you must:
 - **DBC Utility**: GPL v3
 - **PyQt5**: GPL v3 (compatible)
 - **Cantools**: MIT License (compatible)
-- **Pillow**: HPND License (compatible)
 - **PyInstaller**: GPL v2 with exception (compatible)
 
 ## Contributing

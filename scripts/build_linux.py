@@ -16,8 +16,7 @@ def check_dependencies():
     # Define package names and their actual import names
     package_imports = {
         'PyQt5': 'PyQt5',
-        'cantools': 'cantools', 
-        'Pillow': 'PIL'  # Pillow is imported as PIL
+        'cantools': 'cantools'
     }
     
     missing_packages = []
@@ -106,8 +105,6 @@ def build_linux_package():
         "--hidden-import=PyQt5.QtGui", 
         "--hidden-import=PyQt5.QtWidgets",
         "--hidden-import=cantools",
-        "--hidden-import=PIL",
-        "--hidden-import=PIL.Image",
         "--hidden-import=search_module",
         "--hidden-import=dbc_editor_ui",
         "--hidden-import=dbc_editor",
@@ -208,12 +205,15 @@ def create_desktop_entry(dist_dir):
 Version=1.0
 Type=Application
 Name=DBC Utility
-Comment=CAN Database Editor
-Exec={}/launch-dbc-utility.sh
-Icon={}/icons/app_icon.png
+GenericName=CAN Database Editor
+Comment=Edit and view CAN database files (DBC format)
+Exec=launch-dbc-utility.sh
+Icon=app_icon.png
 Terminal=false
-Categories=Development;Engineering;
-""".format(dist_dir, dist_dir)
+Categories=Development;Engineering;Electronics;
+Keywords=CAN;DBC;Database;Automotive;Engineering;
+StartupWMClass=DBCUtility
+"""
     
     desktop_path = dist_dir / "DBCUtility.desktop"
     with open(desktop_path, 'w') as f:
@@ -246,10 +246,12 @@ ICON_DIR="$HOME/.local/share/icons"
 echo "Installing DBC Utility..."
 
 # Create installation directory
+echo "Creating installation directory: $INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
 echo "✓ Created installation directory: $INSTALL_DIR"
 
 # Copy application files
+echo "Copying application files..."
 sudo cp -r "$SCRIPT_DIR"/* "$INSTALL_DIR/"
 echo "✓ Copied application files"
 
@@ -261,13 +263,15 @@ echo "✓ Set executable permissions"
 # Create desktop entry
 mkdir -p "$DESKTOP_DIR"
 cp "$INSTALL_DIR/DBCUtility.desktop" "$DESKTOP_DIR/"
-sed -i "s|{}/launch-dbc-utility.sh|$INSTALL_DIR/launch-dbc-utility.sh|g" "$DESKTOP_DIR/DBCUtility.desktop"
-sed -i "s|{}/icons/app_icon.png|$INSTALL_DIR/icons/app_icon.png|g" "$DESKTOP_DIR/DBCUtility.desktop"
+
+# Update the desktop entry with correct paths
+sed -i "s|Exec=launch-dbc-utility.sh|Exec=$INSTALL_DIR/launch-dbc-utility.sh|g" "$DESKTOP_DIR/DBCUtility.desktop"
+sed -i "s|Icon=app_icon.png|Icon=dbc-utility|g" "$DESKTOP_DIR/DBCUtility.desktop"
 echo "✓ Created desktop entry"
 
-# Copy icon
+# Copy icon to system icon directory
 mkdir -p "$ICON_DIR"
-cp "$INSTALL_DIR/icons/app_icon.png" "$ICON_DIR/dbc-utility.png"
+cp "$INSTALL_DIR/_internal/icons/app_icon.png" "$ICON_DIR/dbc-utility.png"
 echo "✓ Installed application icon"
 
 # Update desktop database

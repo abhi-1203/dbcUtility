@@ -71,8 +71,6 @@ def build_executable():
             "--hidden-import=PyQt5.QtGui",
             "--hidden-import=PyQt5.QtWidgets",
             "--hidden-import=cantools",
-            "--hidden-import=PIL",
-            "--hidden-import=PIL.Image",
             "--hidden-import=search_module",
             "--hidden-import=dbc_editor_ui",
             "--hidden-import=dbc_editor",

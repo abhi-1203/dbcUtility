@@ -60,11 +60,6 @@ try:
 except ImportError:
     show_import_error('cantools')
 
-try:
-    from PIL import Image
-except ImportError:
-    show_import_error('Pillow')
-
 from search_module import UnifiedSearchWidget
 from dbc_editor_ui import DBCEditorWidget
 
@@ -191,7 +186,7 @@ class ConverterWindow(QtWidgets.QWidget):
         self.exitBtn.setFixedWidth(80)
         
         # Set button icons
-        self._set_button_icon(self.refresh_btn, "icons/refresh.ico")
+        self._set_button_icon(self.refresh_btn, "icons/load_white.ico")
         self._set_button_icon(self.exitBtn, "icons/exit.ico")
         
         top_buttons_layout = QtWidgets.QHBoxLayout()
