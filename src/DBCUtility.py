@@ -122,6 +122,7 @@ class DBCProcessor:
                     "is_signed": sig.is_signed,
                     "minimum": sig.minimum,
                     "maximum": sig.maximum,
+                    "start bit|length": f"{sig.start}|{sig.length}",
                     "item_text": f"{msg.name}.{sig.name}"
                 }
                 message_info["signals"].append(signal_info)
