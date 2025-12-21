@@ -368,6 +368,8 @@ class ConverterWindow(QtWidgets.QWidget):
                             details_html.append(f"<div><b>Is Signed:</b> {sig['is_signed']}</div>")
                             details_html.append(f"<div><b>Minimum:</b> {sig['minimum']}</div>")
                             details_html.append(f"<div><b>Maximum:</b> {sig['maximum']}</div>")
+                            details_html.append(f"<div><b>Maximum:</b> {sig['maximum']}</div>")
+                            details_html.append(f"<div><b>Start Bit|Length:</b> {sig['start bit|length']}</div>")
                             details_html.append("</div>")
                     else:
                         details_html.append("<div style='font-style:italic; color:#7F8C8D; margin-top:10px;'>No signals for this message.</div>")
