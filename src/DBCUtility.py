@@ -183,16 +183,13 @@ class DBCProcessor:
                     "offset": getattr(sig, 'offset', 0.0),
                     "minimum": sig.minimum,
                     "maximum": sig.maximum,
-<<<<<<< HEAD
                     "start bit|length": f"{sig.start}|{sig.length}",
-=======
                     "unit": getattr(sig, 'unit', '') or '',
                     "initial_value": getattr(sig, 'initial', None),
                     "values": values_dict if values_dict else None,  # Enum/choice table
                     "receivers": [str(r) for r in sig.receivers],
                     "signal_groups": signal_groups_membership,  # List[str] of group names this signal belongs to
                     "comments": cleaned_comments,
->>>>>>> bfb442f (Added: Home screen, About Dialog, Signal UI updates: - Added Signal groups, clear attributes, DBC info)
                     "item_text": f"{msg.name}.{sig.name}"
                 }
                 message_info["signals"].append(signal_info)
