@@ -524,6 +524,9 @@ class ConverterWindow(QtWidgets.QWidget):
 
         # Basic Properties
         basic_group = self._tree_add_group(sig_item, "Basic Properties")
+        start_bit_length = sig_data.get("start bit|length")
+        if start_bit_length:
+            self._tree_add_row(basic_group, "Start Bit|Length", start_bit_length, "str")
         byte_order = sig_data.get("byte_order", "little_endian")
         byte_order_display = f"{byte_order} (Intel)" if byte_order == "little_endian" else f"{byte_order} (Motorola)"
         self._tree_add_row(basic_group, "Byte Order", byte_order_display, "str")
