@@ -28,6 +28,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from src.DBCUtility import MainWindow
 from PyQt5 import QtWidgets, QtGui
+from src.resource_utils import get_resource_path
 
 def main():
     """Main entry point for the application."""
@@ -35,7 +36,6 @@ def main():
     
     # Set application icon at the QApplication level first
     try:
-        from src.DBCUtility import get_resource_path
         icon_path = get_resource_path("icons/app_icon.ico")
         if os.path.exists(icon_path):
             app_icon = QtGui.QIcon(icon_path)
