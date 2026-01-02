@@ -436,6 +436,10 @@ class ConverterWindow(QtWidgets.QWidget):
 class MainWindow(QtWidgets.QMainWindow):
     APP_NAME = "CAN DBC Utility"
     APP_VERSION = get_version()
+    APP_DESCRIPTION = "Open Source tool to view and edit CAN DBC files."
+    APP_WEBSITE = "https://DBCUtility.com"
+    APP_GITHUB = "https://github.com/abhi-1203/dbcUtility"
+    APP_CREATOR = "Abhijith"
 
     def __init__(self, parent=None):
         super().__init__(parent)
