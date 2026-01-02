@@ -14,15 +14,7 @@ import json
 from dbc_editor import DBCEditor, DBCEditorError
 from search_module import UnifiedSearchWidget
 
-def get_resource_path(relative_path):
-    """Get absolute path to resource, works for dev and for PyInstaller"""
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-    
-    return os.path.join(base_path, relative_path)
+from resource_utils import get_resource_path
 
 class MessageEditDialog(QtWidgets.QDialog):
     """Enhanced dialog for editing message properties."""
@@ -449,6 +441,8 @@ class SignalEditDialog(QtWidgets.QDialog):
 
 class DBCEditorWidget(QtWidgets.QWidget):
     """Main DBC editor widget with error handling and improved readability."""
+    dbcFileLoaded = QtCore.pyqtSignal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.dbc_editor = DBCEditor()
@@ -806,21 +800,48 @@ class DBCEditorWidget(QtWidgets.QWidget):
                 self, "Load DBC File", "", "DBC Files (*.dbc);;All Files (*)"
             )
             if file_path:
-                self.status_label.setText("Loading DBC file...")
-                data = self.dbc_editor.load_dbc_file(file_path)
-                self.current_file_path = file_path
-                self.file_label.setText(f"File: {file_path}")
-                self.populate_message_list()
-                self.status_label.setText("DBC file loaded successfully")
-                QtWidgets.QApplication.processEvents()
-                self.update_button_states()
-                
-                # Clean up any existing backup files for the newly loaded file
-                self.dbc_editor._cleanup_backup_file(file_path)
-        except DBCEditorError as e:
-            self._show_error(f"Failed to load DBC file: {str(e)}")
+                self.load_dbc_path(file_path)
         except Exception as e:
             self._show_error(f"Unexpected error: {str(e)}")
+
+    def load_dbc_path(self, file_path: str) -> bool:
+        """
+        Load a DBC file directly (no file dialog). Intended for the Home screen.
+        Returns True on success, False on failure.
+        """
+        try:
+            if not file_path:
+                self._show_error("No file path provided.")
+                return False
+            if not os.path.exists(file_path):
+                self._show_error(f"DBC file not found:\n{file_path}")
+                return False
+            if not file_path.lower().endswith(".dbc"):
+                self._show_error("Selected file must have .dbc extension.")
+                return False
+
+            self.status_label.setText("Loading DBC file...")
+            QtWidgets.QApplication.processEvents()
+
+            self.dbc_editor.load_dbc_file(file_path)
+            self.current_file_path = file_path
+            self.file_label.setText(f"File: {file_path}")
+            self.populate_message_list()
+            self.status_label.setText("DBC file loaded successfully")
+            QtWidgets.QApplication.processEvents()
+            self.update_button_states()
+
+            # Clean up any existing backup files for the newly loaded file
+            self.dbc_editor._cleanup_backup_file(file_path)
+
+            self.dbcFileLoaded.emit(file_path)
+            return True
+        except DBCEditorError as e:
+            self._show_error(f"Failed to load DBC file: {str(e)}")
+            return False
+        except Exception as e:
+            self._show_error(f"Unexpected error: {str(e)}")
+            return False
 
     def filter_messages(self, search_query="", filter_type="All"):
         """Filter messages based on search text and filter selection."""
