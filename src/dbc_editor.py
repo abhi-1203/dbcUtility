@@ -184,13 +184,13 @@ class DBCEditor:
             'signals': [dict(sig) for sig in original.get('signals', [])],
             'comments': original.get('comments', '')
         }
-        # Ensure unique name by appending " Copy", " Copy (2)", etc.
-        base_name = f"{original['name']} Copy"
-        candidate = base_name
+        # Ensure unique name by appending "_1", "_2", etc.
+        base_name = original['name']
+        candidate = f"{base_name}_1"
         suffix = 2
         existing_names = {m['name'] for m in self._modified_data['messages']}
         while candidate in existing_names:
-            candidate = f"{base_name} ({suffix})"
+            candidate = f"{base_name}_{suffix}"
             suffix += 1
         new_message['name'] = candidate
         self._modified_data['messages'].append(new_message)
@@ -249,13 +249,13 @@ class DBCEditor:
             raise DBCEditorError("Invalid signal index")
         original = signals[sig_idx]
         new_signal = dict(original)
-        # Ensure unique name by appending " Copy", " Copy (2)", etc.
-        base_name = f"{original['name']} Copy"
-        candidate = base_name
+        # Ensure unique name by appending "_1", "_2", etc.
+        base_name = original['name']
+        candidate = f"{base_name}_1"
         suffix = 2
         existing_names = {s['name'] for s in signals}
         while candidate in existing_names:
-            candidate = f"{base_name} ({suffix})"
+            candidate = f"{base_name}_{suffix}"
             suffix += 1
         new_signal['name'] = candidate
         signals.append(new_signal)
